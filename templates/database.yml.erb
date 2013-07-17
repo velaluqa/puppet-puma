@@ -1,0 +1,36 @@
+# MANAGED BY PUPPET
+# Module:: puma
+#
+# PRODUCTION
+#
+<% case @db_adapter -%>
+<% when 'mysql' -%>
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: <%= @db_name_real %>
+  pool: 5
+  username: <%= @db_user_real %>
+  password: <%= @db_password %>
+<% if @db_socket != "UNSET" -%>
+  socket: <%= @db_socket %>
+<% else -%>
+  host: '<%= @db_host %>'
+  port: '<%= @db_port %>'
+<% end -%>
+<% when 'pgsql' -%>
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: '<%= @db_name_real %>'
+  pool: 5
+  username: '<%= @db_user_real %>'
+  password: '<%= @db_password %>'
+<% if @db_socket != "UNSET" -%>
+  socket: <%= @db_socket %>
+<% else -%>
+  host: '<%= @db_host %>'
+  port: '<%= @db_port %>'
+<% end -%>
+<% end -%>

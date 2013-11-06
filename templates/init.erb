@@ -15,7 +15,7 @@
 ### END INIT INFO
 
 
-APP_ROOT="<%= @app_root %>"
+APP_ROOT="<%= @app_root %>/current"
 APP_USER="<%= @app_user %>"
 DAEMON_OPTS="-C $APP_ROOT/config/puma.rb"
 PID_PATH="$APP_ROOT/tmp/pids"
@@ -51,10 +51,12 @@ start() {
     exit 1
   else
     if [ `whoami` = root ]; then
-      execute "rm $SOCKET_PATH/puma.socket"
-      execute "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
-      execute "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
-      echo "$DESC started"
+        if [ -f "$SOCKET_PATH/puma.socket"]; then
+            execute "rm $SOCKET_PATH/puma.socket"
+        fi
+        execute "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
+        execute "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
+        echo "$DESC started"
     fi
   fi
 }

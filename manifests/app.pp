@@ -13,7 +13,7 @@ define puma::app(
 ) {
 
   if $rvm_ruby != '' {
-    $rvm_prefix = "source /usr/local/rvm/scripts/rvm; rvm use ${rvm_ruby}; "
+    $rvm_prefix = "source /usr/local/rvm/scripts/rvm; rvm use ${rvm_ruby} > /dev/null; "
   } else {
     $rvm_prefix = ''
   }

@@ -40,7 +40,10 @@ define puma::app(
     require => Group[$app_user],
   }
 
-  file { ["${app_root}/shared", "${app_root}/shared/config"]:
+  file { ["${app_root}/shared",
+          "${app_root}/shared/tmp",
+          "${app_root}/shared/config",
+          "${app_root}/shared/tmp/sockets"]:
     ensure => directory,
     owner  => $app_user,
     group  => $app_user,

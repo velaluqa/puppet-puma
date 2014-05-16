@@ -79,7 +79,9 @@ describe 'puma::app', type: :define do
       should contain_file('/srv/customRedmine').with(options)
       should contain_file('/srv/customRedmine/shared').with(options)
       should contain_file('/srv/customRedmine/shared/tmp').with(options)
+      should contain_file('/srv/customRedmine/shared/log').with(options)
       should contain_file('/srv/customRedmine/shared/config').with(options)
+      should contain_file('/srv/customRedmine/shared/tmp/pids').with(options)
       should contain_file('/srv/customRedmine/shared/tmp/sockets').with(options)
     end
 

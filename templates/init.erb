@@ -14,23 +14,26 @@
 # Description:       <%= @app_name %> rack/rails application
 ### END INIT INFO
 
-
 APP_ROOT="<%= @app_root %>/current"
 APP_USER="<%= @app_user %>"
+
+<% if @use_bundler -%>
+BUNDLE_PREFIX=" bundle exec"
+<% else -%>
+BUNDLE_PREFIX=""
+<% end -%>
+RVM_PREFIX="<%= @rvm_prefix %>"
+
 DAEMON_OPTS="-C $APP_ROOT/config/puma.rb"
 PID_PATH="$APP_ROOT/tmp/pids"
 SOCKET_PATH="$APP_ROOT/tmp/sockets"
 WEB_SERVER_PID="$PID_PATH/puma.pid"
-SIDEKIQ_PID="$PID_PATH/sidekiq.pid"
-STOP_SIDEKIQ="RAILS_ENV=production bundle exec rake sidekiq:stop"
-START_SIDEKIQ="RAILS_ENV=production bundle exec rake sidekiq:start"
 NAME="<%= @app_name %>"
 DESC="<%= @app_name %>"
 
 check_pid(){
   if [ -f $WEB_SERVER_PID ]; then
     PID=`cat $WEB_SERVER_PID`
-    SPID=`cat $SIDEKIQ_PID`
     STATUS=`ps aux | grep $PID | grep -v grep | wc -l`
   else
     STATUS=0
@@ -39,7 +42,7 @@ check_pid(){
 }
 
 execute() {
-  sudo -u $APP_USER -H bash -l -c "<%= @rvm_prefix %>$1"
+  sudo -u $APP_USER -H bash -l -c "$RVM_PREFIX$1"
 }
 
 start() {
@@ -54,8 +57,7 @@ start() {
         if [ -f "$SOCKET_PATH/puma.socket"]; then
             execute "rm $SOCKET_PATH/puma.socket"
         fi
-        execute "RAILS_ENV=production bundle exec puma $DAEMON_OPTS"
-        execute "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
+        execute "RAILS_ENV=production$BUNDLER_PREFIX puma $DAEMON_OPTS"
         echo "$DESC started"
     fi
   fi
@@ -67,7 +69,6 @@ stop() {
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     ## Program is running, stop it.
     kill -QUIT `cat $WEB_SERVER_PID`
-    execute "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1 &"
     rm "$WEB_SERVER_PID" >> /dev/null
     echo "$DESC stopped"
   else
@@ -83,10 +84,6 @@ restart() {
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     echo "Restarting $DESC..."
     kill -USR2 `cat $WEB_SERVER_PID`
-    execute "mkdir -p $PID_PATH && $STOP_SIDEKIQ  > /dev/null  2>&1 &"
-    if [ `whoami` = root ]; then
-      execute "mkdir -p $PID_PATH && $START_SIDEKIQ  > /dev/null  2>&1 &"
-    fi
     echo "$DESC restarted."
   else
     echo "Error, $NAME not running!"
@@ -99,7 +96,6 @@ status() {
   check_pid
   if [ "$PID" -ne 0 -a "$STATUS" -ne 0 ]; then
     echo "$DESC / Puma with PID $PID is running."
-    echo "$DESC / Sidekiq with PID $SPID is running."
   else
     echo "$DESC is not running."
     exit 1

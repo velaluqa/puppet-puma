@@ -1,3 +1,5 @@
+![Travis CI Status: puppet-puma](https://travis-ci.org/velaluqa/puppet-puma.svg)
+
 # Puppet-puma
 
 ## Configure a Rails application

@@ -7,7 +7,7 @@ hosts.each do |host|
   # TODO: Fix this for various types of linux distributions or unix derivatives.
   on host,
      'DEBIAN_FRONTEND=noninteractive apt-get install --yes -q openssl libssl-dev'
-  on host, 'gem install puppet sinatra puma --no-ri --no-rdoc'
+  on host, 'gem install puppet --no-ri --no-rdoc'
   on host, "mkdir -p #{host['distmoduledir']}"
 end
 

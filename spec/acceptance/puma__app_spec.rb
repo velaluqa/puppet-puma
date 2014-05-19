@@ -4,7 +4,14 @@ describe 'puma::app class' do
   describe 'configuring rack without bundler and rvm' do
     it 'should work without errors' do
       pp = <<PP
-puma::app { "redmine": }
+package { ['sinatra', 'puma']:
+    ensure   => 'installed',
+    provider => 'gem',
+}
+
+puma::app { "redmine":
+  require => Package['sinatra', 'puma'],
+}
 
 file { "/srv/redmine/current/config.ru":
   content => "require 'sinatra'; class App < Sinatra::Base; get '/' do '<html><body>Test file!</body></html>'; end; end; run App",

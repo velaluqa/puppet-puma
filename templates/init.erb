@@ -57,7 +57,7 @@ start() {
         if [ -f "$SOCKET_PATH/puma.socket"]; then
             execute "rm $SOCKET_PATH/puma.socket"
         fi
-        execute "RAILS_ENV=production$BUNDLER_PREFIX puma $DAEMON_OPTS"
+        execute "RAILS_ENV=production$BUNDLE_PREFIX puma $DAEMON_OPTS"
         echo "$DESC started"
     fi
   fi

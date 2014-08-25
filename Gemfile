@@ -16,6 +16,6 @@ group :development, :test do
   gem 'simplecov',              :require => false
   gem 'puppet-blacksmith',      :require => false
   gem 'puppet-syntax',          :require => false
-  gem 'beaker',                 :require => false
+  gem 'beaker', require: false, git: 'https://github.com/leoc/beaker.git', branch: 'add-prebuilt-packages-to-docker'
   gem 'beaker-rspec',           :require => false
 end

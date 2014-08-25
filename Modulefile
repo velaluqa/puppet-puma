@@ -1,8 +1,0 @@
-name    'puppet-puma'
-version '0.0.1'
-source  'https://github.com/leoc/puppet-puma'
-author  'Arthur Leonard Andersen'
-license 'GPLv3'
-summary 'Puppet Puma Module'
-description 'Module to install Rack/Rails applications via puma.'
-project_page 'https://github.com/leoc/puppet-puma/'

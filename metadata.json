@@ -1,0 +1,12 @@
+{
+  "name": "velaluqa-puma",
+  "version": "0.0.1",
+  "author": "Arthur Leonard Andersen",
+  "summary": "Puppet Puma Module",
+  "license": "GPLv3",
+  "source": "https://github.com/velaluqa/puppet-puma",
+  "project_page": "https://github.com/velaluqa/puppet-puma/",
+  "issues_url": "https://github.com/velaluqa/puppet-puma/issues",
+  "description": "Module to install Rack/Rails applications via puma.",
+  "dependencies": []
+}

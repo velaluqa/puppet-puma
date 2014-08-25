@@ -14,11 +14,11 @@ define puma::app(
   }
 
   user { $app_user:
-    ensure     => present,
-    shell      => '/bin/bash',
-    password   => '*',
-    home       => "/home/${app_user}",
-    system     => true,
+    ensure   => present,
+    shell    => '/bin/bash',
+    password => '*',
+    home     => "/home/${app_user}",
+    system   => true,
   }
 
   ->
@@ -34,7 +34,8 @@ define puma::app(
           "${app_root}/shared/tmp",
           "${app_root}/shared/config",
           "${app_root}/shared/tmp/sockets",
-          "${app_root}/shared/tmp/pids"]:
+          "${app_root}/shared/tmp/pids",
+          "/home/${app_user}"]:
     ensure => directory,
     owner  => $app_user,
     group  => $app_user,

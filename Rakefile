@@ -11,6 +11,7 @@ exclude_paths = [
   "spec/**/*",
 ]
 PuppetLint.configuration.ignore_paths = exclude_paths
+PuppetLint.configuration.send('disable_autoloader_layout')
 PuppetSyntax.exclude_paths = exclude_paths
 
 desc "Run acceptance tests"

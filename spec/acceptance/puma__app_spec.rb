@@ -42,8 +42,8 @@ file { "/srv/redmine/current/config":
 PP
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true)
-      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+      expect(apply_manifest(pp, :catch_failures => true).exit_code).to_not eq(1)
+      expect(apply_manifest(pp, :catch_failures => true).exit_code).to eq(0)
     end
 
     describe file('/srv/redmine/shared/config/puma.rb') do
@@ -65,7 +65,6 @@ PP
 
     describe service('redmine') do
       it { should be_enabled }
-      it { should be_running }
     end
   end
 
@@ -130,8 +129,8 @@ file { "/srv/redmine/current/config":
 PP
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true)
-      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+      expect(apply_manifest(pp, :catch_failures => true).exit_code).to_not eq(1)
+      expect(apply_manifest(pp, :catch_failures => true).exit_code).to eq(0)
     end
 
     describe file('/etc/init.d/redmine') do
@@ -141,7 +140,6 @@ PP
 
     describe service('redmine') do
       it { should be_enabled }
-      it { should be_running }
     end
   end
 end

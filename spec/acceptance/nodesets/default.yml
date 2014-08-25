@@ -1,9 +1,14 @@
 HOSTS:
-  debian-73-x64-virtualbox-puppet:
-    roles:
-      - master
-    platform: debian-7-amd64
-    box : debian-73-x64-virtualbox-puppet
-    box_url : http://puppet-vagrant-boxes.puppetlabs.com/debian-73-x64-virtualbox-puppet.box
-    hypervisor : vagrant
-    distmoduledir: /etc/puppet/modules
+  debian-7-4:
+    platform: debian-7.4-x64
+    image: debian:7.4
+    hypervisor: docker
+    docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'DEBIAN_FRONTEND=noninteractive apt-get install --yes -q openssl libssl-dev rubygems'
+      - 'gem install puppet --no-ri --no-rdoc'
+      - 'mkdir -p /etc/puppet/modules'
+    docker_preserve_image: true
+CONFIG:
+  log_level: debug
+  type: foss
